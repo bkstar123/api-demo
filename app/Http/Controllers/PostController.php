@@ -58,7 +58,7 @@ class PostController extends Controller
         ]);
 
         $postData = request()->all();
-        $postData['user_id'] = 1; // it will later be changed to the current token-based authenticated user
+        $postData['user_id'] = $request->user()->id;
         $postData['slug'] = str_slug($postData['title'], '-').'-'.time().'-'.mt_rand(0, 100);
         $post = Post::create($postData);
         return $this->apiResponser->showInstance($post->fresh(), PostResource::class, 201);
