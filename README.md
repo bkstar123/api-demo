@@ -1,6 +1,6 @@
-# Build an example API system using bkstar123/laravel-api-buddy and Laravel Passport packages
+# Build an example API system
 
-This example demonstrates how easily & quickly you can build an API system using ***bkstar123/laravel-api-buddy*** and protect it using ***Laravel Passport***.  
+This example demonstrates how easily & quickly you can build an API system using ***bkstar123/laravel-api-buddy*** and protect it with ***Laravel Passport***.  
 
 We will build the following API endpoints:  
 - GET ```/posts```: list all the posts  
