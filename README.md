@@ -2042,7 +2042,7 @@ You can easily consume your APIs from your own Javascript without going through 
 
 &ndash; Congratulations, you have completed this tutorial on how to build a powerful API system using ```bkstar123/laravel-api-buddy```package and protect your API routes with Laravel Passport.  
 
-&ndash; The last step is to build a good API documentation for your users easier to consume. For this purpose, you can use **Postman** to create a beautiful API documentation and share it with the world.  
+&ndash; The last step is to build a good API documentation for your users easier consumption. For this purpose, you can use **Postman** to create a beautiful API documentation and share it with the world.  
 
 
 
