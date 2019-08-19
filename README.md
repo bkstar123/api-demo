@@ -1,6 +1,6 @@
 # Build an example API system
 
-This example demonstrates how easily & quickly you can build an API system using ***bkstar123/laravel-api-buddy*** and protect it with ***Laravel Passport***.  
+This example demonstrates how easily & quickly you can build an API system using ***bkstar123/laravel-api-buddy*** package and protect it with ***Laravel Passport***.  
 
 We will build the following API endpoints:  
 - GET ```/posts```: list all the posts  
@@ -24,7 +24,7 @@ We will build the following API endpoints:
 
 ## 1 Application Scalfolding
 
-Our imaginary system consists of ```users```, ```tags``` and ```posts```. Their relationships are as follows:  
+Our imaginary system consists of ```users```, ```tags``` and ```posts``` tables. Their relationships are as follows:  
 - A user can create many posts  
 - A post can be created by one user  
 - A tag can be placed on zero or many posts  
@@ -716,11 +716,11 @@ class PostController extends Controller
 ***c) Queries***  
 ```bash
 curl -X GET /api/v1/posts
-curl -X GET /api/v1/posts\?limit=10 
-curl -X GET /api/v1/posts\?fields=title,postSlug
-curl -X GET /api/v1/posts\?sort_by=created,-title
-curl -X GET /api/v1/posts\?postSlug=your-post-slug
-curl -X GET /api/v1/posts\?created{lte}=2019-08-10%2019:22:30
+curl -X GET /api/v1/posts?limit=10 
+curl -X GET /api/v1/posts?fields=title,postSlug
+curl -X GET /api/v1/posts?sort_by=created,-title
+curl -X GET /api/v1/posts?postSlug=your-post-slug
+curl -X GET /api/v1/posts?created{lte}=2019-08-10%2019:22:30
 ```  
 
 ### 2.2 Show a post of the given slug
@@ -771,8 +771,8 @@ class PostController extends Controller
 
 ***c) Queries***  
 ```bash
-curl -X GET /api/v1/posts/{post-slug}
-curl -X GET /api/v1/posts/{post-slug}\?fields=title,postSlug
+curl -X GET /api/v1/posts/<post-slug>
+curl -X GET /api/v1/posts/<post-slug>?fields=title,postSlug
 ```  
 
 ### 2.3 List all tags of the given post 
@@ -823,7 +823,7 @@ class PostController extends Controller
 
 ***c) Queries***  
 ```bash
-curl -X GET /api/v1/posts/{post-slug}/tags # you can also apply sorting, filtering, paginating and selecting queries
+curl -X GET /api/v1/posts/<post-slug>/tags # you can also apply sorting, filtering, paginating and selecting queries
 ```  
 
 ### 2.4 Get the owner of a post of the given slug
@@ -873,7 +873,7 @@ class PostController extends Controller
 
 ***c) Queries***  
 ```bash
-curl -X GET /api/v1/posts/{post-slug}/users # you can also apply selecting query
+curl -X GET /api/v1/posts/<post-slug>/users # you can also apply selecting query
 ```  
 
 ### 2.5 Create a new post 
@@ -1006,7 +1006,7 @@ class PostController extends Controller
 
 ***c) Queries***  
 ```bash
-curl -X PUT /api/v1/posts/{post-slug} \
+curl -X PUT /api/v1/posts/<post-slug> \
      -H 'Content-Type: application/x-www-form-urlencoded' \
      -d 'title=New%20Post&body=Very%20nice%20post'
 ```  
@@ -1065,7 +1065,7 @@ class PostController extends Controller
 
 ***c) Queries***  
 ```bash
-curl -X DELETE /api/v1/posts/{post-slug}
+curl -X DELETE /api/v1/posts/<post-slug>
 ```  
 
 ### 2.8 List all the tags
@@ -1114,11 +1114,11 @@ class TagController extends Controller
 ***c) Queries***  
 ```bash
 curl -X GET /api/v1/tags
-curl -X GET /api/v1/tags\?limit=10 
-curl -X GET /api/v1/tags\?fields=tag,tagSlug
-curl -X GET /api/v1/tags\?sort_by=created,-tag
-curl -X GET /api/v1/tags\?tagSlug=your-tag-slug
-curl -X GET /api/v1/tags\?created{lte}=2019-08-10%2019:22:30
+curl -X GET /api/v1/tags?limit=10 
+curl -X GET /api/v1/tags?fields=tag,tagSlug
+curl -X GET /api/v1/tags?sort_by=created,-tag
+curl -X GET /api/v1/tags?tagSlug=your-tag-slug
+curl -X GET /api/v1/tags?created{lte}=2019-08-10%2019:22:30
 ```  
 
 ### 2.9 Show a tag of the given slug
@@ -1168,8 +1168,8 @@ class TagController extends Controller
 
 ***c) Queries***  
 ```bash
-curl -X GET /api/v1/tags/{tag-slug}
-curl -X GET /api/v1/tags/{tag-slug}\?fields=tag,tagSlug
+curl -X GET /api/v1/tags/<tag-slug>
+curl -X GET /api/v1/tags/<tag-slug>?fields=tag,tagSlug
 ```  
 
 ### 2.10 List all posts of the given tag 
@@ -1220,7 +1220,7 @@ class TagController extends Controller
 
 ***c) Queries***  
 ```bash
-curl -X GET /api/v1/tags/{tag-slug}/posts # you can also apply sorting, filtering, paginating and selecting queries
+curl -X GET /api/v1/tags/<tag-slug>/posts # you can also apply sorting, filtering, paginating and selecting queries
 ```  
 
 ### 2.11 Create a new tag 
@@ -1352,7 +1352,7 @@ class TagController extends Controller
 
 ***c) Queries***  
 ```bash
-curl -X PUT /api/v1/tags/{tag-slug} \
+curl -X PUT /api/v1/tags/<tag-slug> \
      -H 'Content-Type: application/x-www-form-urlencoded' \
      -d 'tag=New%20Tag&description=Very%20nice%20tag'
 ```  
@@ -1410,7 +1410,7 @@ class TagController extends Controller
 
 ***c) Queries***  
 ```bash
-curl -X DELETE /api/v1/tags/{tag-slug}
+curl -X DELETE /api/v1/tags/<tag-slug>
 ```  
 
 ### 2.14 List all the users 
@@ -1653,10 +1653,6 @@ use Illuminate\Http\Request;
 |
 */
 
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
-
 Route::group(['prefix' => 'v1'], function () {
     Route::get('posts', 'PostController@getAllPosts')->name('posts.index')->middleware('client');
     Route::get('posts/{post}', 'PostController@getPost')->name('posts.show')->middleware('client');
@@ -1707,10 +1703,6 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-// Route::middleware('auth:api')->get('/user', function (Request $request) {
-//     return $request->user();
-// });
 
 Route::group(['prefix' => 'v1'], function () {
     Route::post('posts', 'PostController@createPost')->name('posts.create')->middleware('auth:api');
@@ -1782,9 +1774,9 @@ Client secret: 1JsWFAAOMg36yaPBwaYU15XuZbPrIgKaz4u5cNrA
 
 ```  
 
-Where aiden15@example.net (id = 1) is the account that the third party's developer/owner created at your application (as step 1 above)  
+Where aiden15@example.net (id = 1) is the account that the third party's developer/owner created in your application (as step 1 above)  
 
-&ndash; On browser, visit the link http://testproject.acme.com/oauth/authorize?client_id=4&redirect_uri=http://thirdparty.acme.com/callback&response_type=code (this simulates the action when a user is being redirected to your server ```/oauth/authorize``` by the third party application)  
+&ndash; In the browser, visit the link http://<your-app-domain.com>/oauth/authorize?client_id=4&redirect_uri=http://thirdparty.acme.com/callback&response_type=code (this simulates the action when a user is being redirected to your server's ```/oauth/authorize``` by the third party application)  
 
 &ndash; If the user does not have an authenticated session with your server, then a login page will be displayed for him (supposing that the user enter ```gswaniawski@example.net / password``` to login to your application)  
 
@@ -1816,7 +1808,7 @@ At this point, we can say that a user of the third party application, who also h
 
 ***c) Refresh token grant type access token***  
 
-Some grant types may provide an access token as well as a refresh token. So, in case of expiration of access token, the refresh token can be ussed to exchange the new set of access/refresh token.  
+Some grant types may provide an access token as well as a refresh token. So, in case of token expiration, the refresh token can be ussed to exchange the new set of access/refresh tokens.  
 
 Example:  
 ```bash
@@ -1834,7 +1826,7 @@ The implicit grant is similar to the authorization code grant; however, the toke
 This grant type allows your session authenticated users to quickly generate an access token for themselves without going through the standard authorization code redirect flow. We will not discuss this grant type further here. Please visit https://laravel.com/docs/5.8/passport#personal-access-tokens for details  
 
 
-### 3.3 Limit the scope of access token
+### 3.3 Limit token scope
 
 Having an access token is just like passing the authentication layer. Sometimes, you may want to put an authorization layer as well. For this purpose, we will implement token scoping which is similar to Gate/Policy for web client cases (Laravel Gates/Policies -> for web clients, Token scoping -> for API clients).  
 
@@ -2012,7 +2004,7 @@ Route::group(['prefix' => 'v1'], function () {
 
 ```bash
 # Redirect a user to your server at /oauth/authorize for getting authorization code with specifying token scopes
-http://testproject.acme.com/oauth/authorize?client_id=4&redirect_uri=http://thirdparty.acme.com/callback&response_type=code&scope=delete-post%20delete-tag
+http://your-app-domain.acme.com/oauth/authorize?client_id=4&redirect_uri=http://thirdparty.acme.com/callback&response_type=code&scope=delete-post%20delete-tag
 
 # The other steps are analogous to the ones desribed in the previous sections
 
@@ -2044,30 +2036,27 @@ You can easily consume your APIs from your own Javascript without going through 
 
 &ndash; The last step is to build a good API documentation for your users easier consumption. For this purpose, you can use **Postman** to create a beautiful API documentation and share it with the world.  
 
+## 5 Appendix
 
+&ndash; You can visit https://documenter.getpostman.com/view/1563611/SVYuqwzL to see the API documentation of this demonstration project. The following clients have been created for you to interact with APIs:  
 
+a) Personal access client  
+Client ID: 1  
+Client secret: KjKZRIbr0LdzJyvnMcNdjGBlooxOLvlBDkPSQWS4  
 
+b) Password grant client  
+Client ID: 2  
+Client secret: bWCdnfMbifUwfYBm0vnv77c2a9d51yV0LH0K5Bxm  
 
+c) API DEMO ClientCredentials Grant Client  
+Client ID: 3  
+Client secret: 5NLKoV8yevlu7WKczsAIpXzrCMrkeSSCxczvpl1g  
 
+d) Authorization Code Grant Type Client  
+Client ID: 4  
+Client secret: qHagnwoOHHZO42eojDSwkopduueQ4GgpaMz7Pfcw  
 
+user ID = 1 yhuels@example.com / password  
+user ID - 2 cormier.shannon@example.net / password  
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+&ndash; In the demo mode, you are not authorized for updating/deleting resources.  
