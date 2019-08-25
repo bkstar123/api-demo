@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function getAllUsers()
     {
-        return $this->apiResponser->showCollection(User::getQuery(), UserResource::class, UserTransformer::class);
+        return $this->apiResponser->showCollection(User::query(), UserResource::class, UserTransformer::class);
     }
 
     public function getUser(User $user)
@@ -24,7 +24,7 @@ class UserController extends Controller
         if (empty($user)) {
             return $this->apiResponser->errorResponse('There is no resource of the given identificator', 404);
         }
-        return $this->apiResponser->showInstance($user, UserResource::class);
+        return $this->apiResponser->showInstance($user, UserResource::class, UserTransformer::class);
     }
 
     public function getUserPosts(User $user)

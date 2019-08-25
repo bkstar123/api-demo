@@ -20,8 +20,8 @@ class PostResource extends AppResource
             'body' => $this->content,
             'postSlug' => $this->slug,
             'visible' => $this->published,
-            'created' => (string) $this->created_at,
-            'updated' => (string) $this->updated_at,
+            'created' => $this->created_at,
+            'updated' => $this->updated_at,
         ];
     }
 

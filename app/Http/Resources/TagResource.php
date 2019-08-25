@@ -19,8 +19,8 @@ class TagResource extends AppResource
             'tag' => $this->name,
             'description' => $this->description,
             'tagSlug' => $this->slug,
-            'created' => (string) $this->created_at,
-            'updated' => (string) $this->updated_at,
+            'created' => $this->created_at,
+            'updated' => $this->updated_at,
         ];
     }
 

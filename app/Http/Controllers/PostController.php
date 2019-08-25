@@ -11,6 +11,7 @@ use App\Http\Resources\PostResource;
 use App\Http\Resources\UserResource;
 use App\Transformers\TagTransformer;
 use App\Transformers\PostTransformer;
+use App\Transformers\UserTransformer;
 use Bkstar123\ApiBuddy\Http\Controllers\ApiController as Controller;
 
 class PostController extends Controller
@@ -23,7 +24,7 @@ class PostController extends Controller
 
     public function getAllPosts()
     {
-        return $this->apiResponser->showCollection(Post::getQuery(), PostResource::class, PostTransformer::class);
+        return $this->apiResponser->showCollection(Post::query(), PostResource::class, PostTransformer::class);
     }
 
     public function getPost(Post $post)
@@ -31,7 +32,7 @@ class PostController extends Controller
         if (empty($post)) {
             return $this->apiResponser->errorResponse('There is no resource of the given identificator', 404);
         }
-        return $this->apiResponser->showInstance($post, PostResource::class);
+        return $this->apiResponser->showInstance($post, PostResource::class, PostTransformer::class);
     }
 
     public function getPostTags(Post $post)
@@ -47,7 +48,7 @@ class PostController extends Controller
         if (empty($post)) {
             return $this->apiResponser->errorResponse('There is no resource of the given identificator', 404);
         }
-        return $this->apiResponser->showInstance($post->user()->first(), UserResource::class);
+        return $this->apiResponser->showInstance($post->user()->first(), UserResource::class, UserTransformer::class);
     }
 
     public function createPost(Request $request)
@@ -61,7 +62,7 @@ class PostController extends Controller
         $postData['user_id'] = $request->user()->id;
         $postData['slug'] = str_slug($postData['title'], '-').'-'.time().'-'.mt_rand(0, 100);
         $post = Post::create($postData);
-        return $this->apiResponser->showInstance($post->fresh(), PostResource::class, 201);
+        return $this->apiResponser->showInstance($post->fresh(), PostResource::class, PostTransformer::class, 201);
     }
 
     public function updatePost(Request $request, Post $post)
@@ -77,7 +78,7 @@ class PostController extends Controller
             return $this->apiResponser->successResponse('Nothing to change', 200);
         }
         if ($post->update($request->all())) {
-            return $this->apiResponser->showInstance($post->fresh(), PostResource::class, 200);
+            return $this->apiResponser->showInstance($post->fresh(), PostResource::class, PostTransformer::class, 200);
         } else {
             return $this->apiResponser->errorResponse('Unknown error occurred');
         }

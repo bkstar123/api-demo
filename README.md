@@ -459,8 +459,8 @@ class PostResource extends AppResource
             'body' => $this->content,
             'postSlug' => $this->slug,
             'visible' => $this->published,
-            'created' => (string) $this->created_at,
-            'updated' => (string) $this->updated_at,
+            'created' => $this->created_at,
+            'updated' => $this->updated_at,
         ];
     }
 
@@ -512,8 +512,8 @@ class TagResource extends AppResource
             'tag' => $this->name,
             'description' => $this->description,
             'tagSlug' => $this->slug,
-            'created' => (string) $this->created_at,
-            'updated' => (string) $this->updated_at,
+            'created' => $this->created_at,
+            'updated' => $this->updated_at,
         ];
     }
 
@@ -561,8 +561,8 @@ class UserResource extends AppResource
         return [
             'user' => $this->name,
             'mailaddress' => $this->email,
-            'created' => (string) $this->created_at,
-            'updated' => (string) $this->updated_at,
+            'created' => $this->created_at,
+            'updated' => $this->updated_at,
         ];
     }
 
@@ -707,7 +707,7 @@ class PostController extends Controller
 
     public function getAllPosts()
     {
-        return $this->apiResponser->showCollection(Post::getQuery()), PostResource::class, PostTransformer::class);
+        return $this->apiResponser->showCollection(Post::query()), PostResource::class, PostTransformer::class);
     }
 
     // ...
@@ -762,7 +762,7 @@ class PostController extends Controller
         if (empty($post)) {
             return $this->apiResponser->errorResponse('There is no resource of the given identificator', 404);
         }
-        return $this->apiResponser->showInstance($post, PostResource::class);
+        return $this->apiResponser->showInstance($post, PostResource::class, PostTransformer::class);
     }
 
     // ...
@@ -853,6 +853,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
+use App\Transformers\UserTransformer;
 use Bkstar123\ApiBuddy\Http\Controllers\ApiController as Controller;
 
 class PostController extends Controller
@@ -864,7 +865,7 @@ class PostController extends Controller
         if (empty($post)) {
             return $this->apiResponser->errorResponse('There is no resource of the given identificator', 404);
         }
-        return $this->apiResponser->showInstance($post->user()->first(), UserResource::class);
+        return $this->apiResponser->showInstance($post->user()->first(), UserResource::class, UserTransformer::class);
     }
 
     // ...
@@ -927,7 +928,7 @@ class PostController extends Controller
         $postData['user_id'] = 1; // it will later be changed to the current token-based authenticated user
         $postData['slug'] = str_slug($postData['title'], '-').'-'.time().'-'.mt_rand(0, 100);
         $post = Post::create($postData);
-        return $this->apiResponser->showInstance($post->fresh(), PostResource::class, 201);
+        return $this->apiResponser->showInstance($post->fresh(), PostResource::class, PostTransformer::class, 201);
     }
 
     // ...
@@ -994,7 +995,7 @@ class PostController extends Controller
             return $this->apiResponser->successResponse('Nothing to change', 200);
         }
         if ($post->update($request->all())) {
-            return $this->apiResponser->showInstance($post->fresh(), PostResource::class, 200);
+            return $this->apiResponser->showInstance($post->fresh(), PostResource::class, PostTransformer::class, 200);
         } else {
             return $this->apiResponser->errorResponse('Unknown error occurred');
         }
@@ -1039,7 +1040,6 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use Illuminate\Http\Request;
-use App\Http\Resources\PostResource;
 use Bkstar123\ApiBuddy\Http\Controllers\ApiController as Controller;
 
 class PostController extends Controller
@@ -1104,7 +1104,7 @@ class TagController extends Controller
 
     public function getAllTags()
     {
-        return $this->apiResponser->showCollection(Tag::getQuery(), TagResource::class, TagTransformer::class);
+        return $this->apiResponser->showCollection(Tag::query(), TagResource::class, TagTransformer::class);
     }
 
     // ...
@@ -1148,6 +1148,7 @@ namespace App\Http\Controllers;
 use App\Tag;
 use Illuminate\Http\Request;
 use App\Http\Resources\TagResource;
+use App\Transformers\TagTransformer;
 use Bkstar123\ApiBuddy\Http\Controllers\ApiController as Controller;
 
 class TagController extends Controller
@@ -1159,7 +1160,7 @@ class TagController extends Controller
         if (empty($tag)) {
             return $this->apiResponser->errorResponse('There is no resource of the given identificator', 404);
         }
-        return $this->apiResponser->showInstance($tag, TagResource::class);
+        return $this->apiResponser->showInstance($tag, TagResource::class, TagTransformer::class);
     }
 
     // ...
@@ -1273,7 +1274,7 @@ class TagController extends Controller
         $tagData = request()->all();
         $tagData['slug'] = str_slug($tagData['name'], '-').'-'.time().'-'.mt_rand(0, 100);
         $tag = Tag::create($tagData);
-        return $this->apiResponser->showInstance($tag->fresh(), TagResource::class, 201);
+        return $this->apiResponser->showInstance($tag->fresh(), TagResource::class, TagTransformer::class, 201);
     }
 
     // ...
@@ -1340,7 +1341,7 @@ class TagController extends Controller
             return $this->apiResponser->successResponse('Nothing to change', 200);
         }
         if ($tag->update($request->all())) {
-            return $this->apiResponser->showInstance($tag->fresh(), TagResource::class, 200);
+            return $this->apiResponser->showInstance($tag->fresh(), TagResource::class, TagTransformer::class, 200);
         } else {
             return $this->apiResponser->errorResponse('Unknown error occurred');
         }
@@ -1449,7 +1450,7 @@ class UserController extends Controller
 
     public function getAllUsers()
     {
-        return $this->apiResponser->showCollection(User::getQuery(), UserResource::class, UserTransformer::class);
+        return $this->apiResponser->showCollection(User::query(), UserResource::class, UserTransformer::class);
     }
 
     // ...
@@ -1493,6 +1494,7 @@ namespace App\Http\Controllers;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Resources\UserResource;
+use App\Transformers\UserTransformer;
 use Bkstar123\ApiBuddy\Http\Controllers\ApiController as Controller;
 
 class UserController extends Controller
@@ -1504,7 +1506,7 @@ class UserController extends Controller
         if (empty($user)) {
             return $this->apiResponser->errorResponse('There is no resource of the given identificator', 404);
         }
-        return $this->apiResponser->showInstance($user, UserResource::class);
+        return $this->apiResponser->showInstance($user, UserResource::class, UserTransformer::class);
     }
 
     // ...

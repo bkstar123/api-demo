@@ -18,8 +18,8 @@ class UserResource extends AppResource
         return [
             'user' => $this->name,
             'mailaddress' => $this->email,
-            'created' => (string) $this->created_at,
-            'updated' => (string) $this->updated_at,
+            'created' => $this->created_at,
+            'updated' => $this->updated_at,
         ];
     }
 

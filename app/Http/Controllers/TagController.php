@@ -22,7 +22,7 @@ class TagController extends Controller
 
     public function getAllTags()
     {
-        return $this->apiResponser->showCollection(Tag::getQuery(), TagResource::class, TagTransformer::class);
+        return $this->apiResponser->showCollection(Tag::query(), TagResource::class, TagTransformer::class);
     }
 
     public function getTag(Tag $tag)
@@ -30,7 +30,7 @@ class TagController extends Controller
         if (empty($tag)) {
             return $this->apiResponser->errorResponse('There is no resource of the given identificator', 404);
         }
-        return $this->apiResponser->showInstance($tag, TagResource::class);
+        return $this->apiResponser->showInstance($tag, TagResource::class, TagTransformer::class);
     }
 
     public function getTagPosts(Tag $tag)
@@ -51,7 +51,7 @@ class TagController extends Controller
         $tagData = request()->all();
         $tagData['slug'] = str_slug($tagData['name'], '-').'-'.time().'-'.mt_rand(0, 100);
         $tag = Tag::create($tagData);
-        return $this->apiResponser->showInstance($tag->fresh(), TagResource::class, 201);
+        return $this->apiResponser->showInstance($tag->fresh(), TagResource::class, TagTransformer::class, 201);
     }
 
     public function updateTag(Request $request, Tag $tag)
@@ -67,7 +67,7 @@ class TagController extends Controller
             return $this->apiResponser->successResponse('Nothing to change', 200);
         }
         if ($tag->update($request->all())) {
-            return $this->apiResponser->showInstance($tag->fresh(), TagResource::class, 200);
+            return $this->apiResponser->showInstance($tag->fresh(), TagResource::class, TagTransformer::class, 200);
         } else {
             return $this->apiResponser->errorResponse('Unknown error occurred');
         }

@@ -122,16 +122,16 @@
         },
         {
             "name": "bkstar123/laravel-api-buddy",
-            "version": "1.4.3",
+            "version": "1.5.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/bkstar123/laravel-api-buddy.git",
-                "reference": "cf76fbfc3626348610b39d0eaeee6b163235c5c1"
+                "reference": "70c84b8a67769d6f998d0c4c64a2bc2222f0fd75"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/bkstar123/laravel-api-buddy/zipball/cf76fbfc3626348610b39d0eaeee6b163235c5c1",
-                "reference": "cf76fbfc3626348610b39d0eaeee6b163235c5c1",
+                "url": "https://api.github.com/repos/bkstar123/laravel-api-buddy/zipball/70c84b8a67769d6f998d0c4c64a2bc2222f0fd75",
+                "reference": "70c84b8a67769d6f998d0c4c64a2bc2222f0fd75",
                 "shasum": ""
             },
             "require": {
@@ -167,7 +167,7 @@
                 "laravel",
                 "restful"
             ],
-            "time": "2019-08-11T01:23:20+00:00"
+            "time": "2019-08-25T11:18:16+00:00"
         },
         {
             "name": "defuse/php-encryption",
